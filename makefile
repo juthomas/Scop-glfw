@@ -40,7 +40,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	
 
 clean:
-	@rm -fv $(OBJ)
+	@rm -f $(OBJ)
 	@rm -rf $(OBJ_PATH)
 	@echo "$(COLOR)Objects \033[100D\033[40C\0033[1;31m[Deleted]\0033[1;37m"
 
