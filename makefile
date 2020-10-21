@@ -11,7 +11,7 @@ INC_PATH = ./include/ $(LIB_PATH)libft/includes/ $(LIB_PATH)glfw/include/ \
 GCC_FLGS = -g #-Werror -Wextra -Wall
 GCC_LIBS = -lglfw3 -framework AppKit -framework OpenGL -framework IOKit -framework CoreVideo 
 
-SRC_NAME = main.c
+SRC_NAME = main.c read_file.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = libft glfw/src
@@ -54,3 +54,25 @@ fclean: clean
 
 
 re: fclean all
+
+coffee: all
+	@echo ""
+	@echo "         {"
+	@echo "      {   }"
+	@echo "       }\0033[1;34m_\0033[1;37m{ \0033[1;34m__\0033[1;37m{"
+	@echo "    \0033[1;34m.-\0033[1;37m{   }   }\0033[1;34m-."
+	@echo "   \0033[1;34m(   \0033[1;37m}     {   \0033[1;34m)"
+	@echo "   \0033[1;34m| -.._____..- |"
+	@echo "   |             ;--."
+	@echo "   |            (__  \ "
+	@echo "   |             | )  )"
+	@echo "   |   \0033[1;96mCOFFEE \0033[1;34m   |/  / "
+	@echo "   |             /  / "
+	@echo "   |            (  / "
+	@echo "   \             | "
+	@echo "     -.._____..- "
+	@echo ""
+	@echo ""
+	@echo "\0033[1;32m\033[3CTake Your Coffee"
+	@echo "\0033[1;37m"
+	@./$(NAME)
