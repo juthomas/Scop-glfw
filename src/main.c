@@ -328,9 +328,9 @@ void processInput(GLFWwindow *window, float *mix_level)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, 1);
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		*mix_level += 0.1;
+		*mix_level += 0.01;
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		*mix_level -= 0.1;
+		*mix_level -= 0.01;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

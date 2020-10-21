@@ -6,6 +6,29 @@
 # include <fcntl.h>
 # include "../lib/libft/includes/libft.h"
 
+typedef struct	s_float2
+{
+	float			x;
+	float			y;
+}				t_float2;
+
+
+typedef struct	s_float3
+{
+	float			x;
+	float			y;
+	float			z;
+}				t_float3;
+
+typedef struct	s_float4
+{
+	float			x;
+	float			y;
+	float			z;
+	float			w;
+}				t_float4;
+
+
 // Struct for usefull scop var
 typedef struct	s_scop
 {
