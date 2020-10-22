@@ -289,6 +289,15 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
 
+		float *mt4;
+
+		mt4 = create_mat4();
+		mt4 = rotate_x_mat4(mt4, 1);
+	
+
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, mt4);
+
+
 		glUniform1f(glGetUniformLocation(shaderProgram, "mix_level"), mix_level);
 
 
