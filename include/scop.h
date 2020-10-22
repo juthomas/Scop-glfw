@@ -63,4 +63,69 @@ typedef struct	s_bmp_header{
 	uint32_t bclrimportant;
 }				t_bmp_header;
 
+
+// Matrix (et pas matrice)
+
+// Copy mt4_src to mt4_dst, return mt4_dst
+float			*cpy_mat(float *mt4_src, float *mt4_dst);
+
+// Reset mt4 to :
+// 1 0 0 0 
+// 0 1 0 0 
+// 0 0 1 0 
+// 0 0 0 1
+// return mt4
+float			*reset_mat4(float *mt4);
+
+// Create and return an identity matrix containing:
+// 1 0 0 0 
+// 0 1 0 0 
+// 0 0 1 0 
+// 0 0 0 1
+float			*create_mat4();
+
+// Create translation matrix from a reseted/new matrix, return mt4
+float			*translation_mat4(float *mt4, t_float3 translation_vector);
+
+// Create scaling matrix from a reseted/new matrix, return mt4
+float			*scaling_mat4(float *mt4, t_float3 scaling_vector);
+
+// Create rotation around X matrix from a reseted/new matrix, return mt4
+float			*rotation_x_mat4(float *mt4, float angle);
+
+// Create rotation around Y matrix from a reseted/new matrix, return mt4
+float			*rotation_y_mat4(float *mt4, float angle);
+
+// Create rotation around Z matrix from a reseted/new matrix, return mt4
+float			*rotation_z_mat4(float *mt4, float angle);
+
+// Translation current matrix, return mt4
+float			*translate_mat4(float *mt4, t_float3 translation_vector);
+
+// Scale current matrix, return mt4
+float			*scale_mat4(float *mt4, t_float3 scaling_vector);
+
+// Rotate around X current matrix, return mt4
+float			*rotate_x_mat4(float *mt4, float angle);
+
+// Rotate around Y current matrix, return mt4
+float			*rotate_y_mat4(float *mt4, float angle);
+
+// Rotate around Z current matrix, return mt4
+float			*rotate_z_mat4(float *mt4, float angle);
+
+// Rotate current matrix, return mt4
+float			*rotate_mat4(float *mt4, t_float3 rotation_vector);
+
+// Multiply mt4 by vector, return a new vector
+t_float4		multiply_mat4_per_float4(float *mt4, t_float4 vector);
+
+// Multiply mt4_1 by mt4_2, return mt4_dst if non NULL, else a new mt4
+float			*multiply_mat4_per_mat4(float *mt4_1, float *mt4_2, float *mt4_dst);
+
+//
+
+
+
+
 char *read_file(char *shader_path, int *size);
