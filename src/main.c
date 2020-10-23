@@ -42,12 +42,27 @@ t_bmp_header serialize_bmp_header(void *addr)
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window, float *mix_level);
+void processInput(GLFWwindow *window, float *mix_level, t_float3 *rotation, t_float3 *translation, t_float3 *size);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+
+void	print_mat4(float *mt4)
+{
+	int i = 0;
+
+	for (int y = 0; y < 4; y++)
+	{
+		for (int x = 0; x < 4; x++)
+		{
+			printf("%f ", mt4[i]);
+			i++;
+		}
+		printf("\n");
+	}
+}
 
 int main()
 {
@@ -256,6 +271,10 @@ int main()
     }
 
 	float mix_level = 0.5;
+	// float rotation = 0;
+	t_float3 rotation = {.x = 0, .y = 0, .z = 0};
+	t_float3 translation = {.x = 0, .y = 0, .z = 0};
+	t_float3 size = {.x = 1, .y = 1, .z = 1};
 
 	glUseProgram(shaderProgram);
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
@@ -273,7 +292,7 @@ int main()
 	{
 		// input
 		// -----
-		processInput(window, &mix_level);
+		processInput(window, &mix_level, &rotation, &translation, &size);
 
 		// render
 		// ------
@@ -292,8 +311,12 @@ int main()
 		float *mt4;
 
 		mt4 = create_mat4();
-		mt4 = rotate_x_mat4(mt4, 1);
-	
+		// mt4 = rotate_x_mat4(mt4, rotation.x);
+		mt4 = rotate_mat4(mt4, rotation);
+		mt4 = translation_mat4(mt4, translation);
+		mt4 = scale_mat4(mt4, size);
+		print_mat4(mt4);
+		printf("\n\n");
 
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, mt4);
 
@@ -332,14 +355,51 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window, float *mix_level)
+void processInput(GLFWwindow *window, float *mix_level, t_float3 *rotation, t_float3 *translation, t_float3 *size)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, 1);
+
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		*mix_level += 0.01;
+		rotation->x += 0.01;
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		*mix_level -= 0.01;
+		rotation->x -= 0.01;
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		rotation->y += 0.01;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		rotation->y -= 0.01;
+	if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
+		rotation->z += 0.01;
+	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
+		rotation->z -= 0.01;
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		translation->x += 0.01;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		translation->x -= 0.01;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		translation->y += 0.01;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		translation->y -= 0.01;
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		translation->z += 0.01;
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		translation->z -= 0.01;
+
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+		size->x += 0.01;
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+		size->x -= 0.01;
+	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+		size->y += 0.01;
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+		size->y -= 0.01;
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+		size->z += 0.01;
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+		size->z -= 0.01;
+
+
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

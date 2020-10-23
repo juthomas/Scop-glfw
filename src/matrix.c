@@ -158,9 +158,10 @@ float			*translate_mat4(float *mt4, t_float3 translation_vector)
 {
 	float *mt4_tmp;
 	float *mt4_result;
-	mt4_tmp = create_mat4();
 
+	mt4_tmp = create_mat4();
 	mt4_tmp = translation_mat4(mt4_tmp, translation_vector);
+	//return (mt4_tmp);
 	mt4_result = multiply_mat4_per_mat4(mt4_tmp, mt4, NULL);
 	mt4 = cpy_mat(mt4_result, mt4);
 	free(mt4_result);
