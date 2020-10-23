@@ -320,3 +320,23 @@ float			*multiply_mat4_per_mat4(float *mt4_1, float *mt4_2, float *mt4_dst)
 	return (mt4);
 }
 
+
+float		*convert_mat4_to_4fv(float *mat)
+{
+	int         i;
+	int         k;
+	float       *dst;
+
+	dst = create_mat4();
+
+	i = -1;
+	while (++i < 4)
+	{
+		k = -1;
+		while(++k < 4)
+			dst[k * 4 + i] = mat[i * 4 + k];
+	}
+	mat = cpy_mat(dst, mat);
+	free(dst);
+	return (mat);
+}

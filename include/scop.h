@@ -124,7 +124,7 @@ t_float4		multiply_mat4_per_float4(float *mt4, t_float4 vector);
 float			*multiply_mat4_per_mat4(float *mt4_1, float *mt4_2, float *mt4_dst);
 
 //
-
+float		*convert_mat4_to_4fv(float *mat);
 
 
 

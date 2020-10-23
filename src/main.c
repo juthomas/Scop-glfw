@@ -312,13 +312,25 @@ int main()
 
 		mt4 = create_mat4();
 		// mt4 = rotate_x_mat4(mt4, rotation.x);
-		mt4 = rotate_mat4(mt4, rotation);
-		mt4 = translation_mat4(mt4, translation);
 		mt4 = scale_mat4(mt4, size);
-		print_mat4(mt4);
-		printf("\n\n");
+		//mt4 = translate_mat4(mt4, translation);
+		 mt4 = translation_mat4(mt4, translation);
+		 mt4 = rotate_mat4(mt4, rotation);
 
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, mt4);
+
+		// print_mat4(mt4);
+		// printf("\n\n");
+
+		GLfloat testGL[16] = {	1, 0, 0, 0.5,
+								0, 1, 0, 0.5,
+								0, 0, 1, 0.5,
+								0, 0, 0, 1};
+		mt4	 = convert_mat4_to_4fv(mt4);
+
+
+
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, (const GLfloat*)mt4);
+		// glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, testGL);
 
 
 		glUniform1f(glGetUniformLocation(shaderProgram, "mix_level"), mix_level);
