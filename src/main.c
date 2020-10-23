@@ -331,7 +331,7 @@ int main()
 		float *view;
 
 		view = create_mat4();
-		view = translate_mat4(view, (t_float3){.x = 0, .y = 0, .z = -3.0});
+		view = translate_mat4(view, (t_float3){.x = 0, .y = 0, .z = -1.0});
 
 		float *projection;
 		projection = create_mat4();
