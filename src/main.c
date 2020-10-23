@@ -4,7 +4,8 @@
 #include "../include/stb_image.h"
 
 
-
+#  define SCR_HEIGHT 600
+#  define SCR_WIDTH 800
 
 
 
@@ -45,8 +46,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window, float *mix_level, t_float3 *rotation, t_float3 *translation, t_float3 *size);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+
 
 
 void	print_mat4(float *mt4)
@@ -312,10 +312,10 @@ int main()
 
 		mt4 = create_mat4();
 		// mt4 = rotate_x_mat4(mt4, rotation.x);
+		 mt4 = rotate_mat4(mt4, rotation);
 		mt4 = scale_mat4(mt4, size);
 		//mt4 = translate_mat4(mt4, translation);
 		 mt4 = translation_mat4(mt4, translation);
-		 mt4 = rotate_mat4(mt4, rotation);
 
 
 		// print_mat4(mt4);
@@ -328,7 +328,21 @@ int main()
 		mt4	 = convert_mat4_to_4fv(mt4);
 
 
+		float *view;
 
+		view = create_mat4();
+		view = translate_mat4(view, (t_float3){.x = 0, .y = 0, .z = -3.0});
+
+		float *projection;
+		projection = create_mat4();
+		projection = set_projection_matrix(projection, 90.);
+
+
+
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, view);
+		
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, projection);
+		
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, (const GLfloat*)mt4);
 		// glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_FALSE, testGL);
 

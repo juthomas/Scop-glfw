@@ -1,10 +1,20 @@
 
+#ifndef SCOP_H
+# define SCOP_H
+
 # define GL_SILENCE_DEPRECATION
 # define TRUE 1
 # include <OpenGL/gl3.h>
 # include <GLFW/glfw3.h>
 # include <fcntl.h>
 # include "../lib/libft/includes/libft.h"
+// # ifdef SCR_WIDTH
+// #  define SCR_WIDTH 800
+// # endif
+// # ifdef SCR_HEIGHT
+// #  define SCR_HEIGHT 600
+// # endif
+# define IDENTITY 1
 
 typedef struct	s_float2
 {
@@ -124,8 +134,9 @@ t_float4		multiply_mat4_per_float4(float *mt4, t_float4 vector);
 float			*multiply_mat4_per_mat4(float *mt4_1, float *mt4_2, float *mt4_dst);
 
 //
-float		*convert_mat4_to_4fv(float *mat);
+float			*convert_mat4_to_4fv(float *mat);
 
-
+float			*set_projection_matrix(float *mt4, float fov);
 
 char *read_file(char *shader_path, int *size);
+#endif

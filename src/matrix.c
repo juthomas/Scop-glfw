@@ -2,7 +2,8 @@
 # include "../include/scop.h"
 # include <math.h>
 
-
+#  define SCR_HEIGHT 600
+#  define SCR_WIDTH 800
 
 float			*cpy_mat(float *mt4_src, float *mt4_dst)
 {
@@ -30,25 +31,25 @@ float			*cpy_mat(float *mt4_src, float *mt4_dst)
 
 float			*reset_mat4(float *mt4)
 {
-	mt4[0] = 1;
+	mt4[0] = IDENTITY;
 	mt4[1] = 0;
 	mt4[2] = 0;
 	mt4[3] = 0;
 
 	mt4[4] = 0;
-	mt4[5] = 1;
+	mt4[5] = IDENTITY;
 	mt4[6] = 0;
 	mt4[7] = 0;
 
 	mt4[8] = 0;
 	mt4[9] = 0;
-	mt4[10] = 1;
+	mt4[10] = IDENTITY;
 	mt4[11] = 0;
 	
 	mt4[12] = 0;
 	mt4[13] = 0;
 	mt4[14] = 0;
-	mt4[15] = 1;
+	mt4[15] = IDENTITY;
 	return(mt4);
 }
 
@@ -267,6 +268,29 @@ float			*rotate_mat4(float *mt4,  t_float3 rotation_vector)
 	free(mt4_result);
 	return (mt4);
 }
+
+
+
+float	*set_projection_matrix(float *mt4, float fov)
+{
+	float	scale;
+	float	far;
+	float	near;
+
+	far = 10000;
+	near = 0.001;
+	scale = 1 / (tan(fov * 0.5 * M_PI / 180.0));
+	mt4 = reset_mat4(mt4);
+
+	//mat4_set(&env->matrice.projection, IDENTITY);
+	mt4[0] = scale / ((float)SCR_WIDTH / (float)SCR_HEIGHT);
+	mt4[5] = scale;
+	mt4[10] = -(far + near) / (far - near);
+	mt4[11] = -1;
+	mt4[14] = -2 * far * near / (far - near);
+	return (mt4);
+}
+
 
 
 t_float4		multiply_mat4_per_float4(float *mt4, t_float4 vector)
