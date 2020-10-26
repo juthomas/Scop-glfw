@@ -138,5 +138,7 @@ float			*convert_mat4_to_4fv(float *mat);
 
 float			*set_projection_matrix(float *mt4, float fov);
 
-char *read_file(char *shader_path, int *size);
+char			*read_file(char *shader_path, int *size);
+
+void				obj_parser(char *input, float *vertex_positions, uint32_t *frags);
 #endif

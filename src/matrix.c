@@ -269,6 +269,89 @@ float			*rotate_mat4(float *mt4,  t_float3 rotation_vector)
 	return (mt4);
 }
 
+t_float3	subtract_b_to_a_float3(t_float3 a, t_float3 b)
+{
+	return ((t_float3){.x = a.x - b.x, .y = a.y - b.y, .z = a.z - b.z});
+}
+
+t_float3	normalize_float3(t_float3 vector)
+{
+	float len;
+
+	len = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+	return ((t_float3){.x = vector.x / len, .y = vector.y / len, .z = vector.z / len});
+}
+
+t_float3	cross_product_float3(t_float3 a, t_float3 b)
+{
+	return ((t_float3){.x = a.y * b.z - a.z * b.y,
+						.y = a.z * b.x - a.x * b.z,
+						.z = a.x * b.y - a.y * b.x});
+}
+
+t_float3	dot_product_float3(t_float3 a, t_float3 b)
+{
+	return ((t_float3){.x = a.x * b.x, .y = a.y * b.y, .z = a.z * b.z});
+}
+
+float		dot_float3(t_float3 a, t_float3 b)
+{
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
+}
+
+float	*look_at(float *mt4_camera, float *mt4_target)
+{
+	t_float3 camera_pos;
+	t_float3 camera_target;
+	t_float3 camera_direction;
+	t_float3 up;
+	t_float3 camera_right;
+	t_float3 camera_up;
+	t_float3 f;
+	t_float3 u;
+	t_float3 s;
+
+
+
+	float	*mt4_result;
+	camera_pos = (t_float3){.x = 0.0, .y = 0.0, .z = 3.0};
+	camera_target = (t_float3){.x = 0.0, .y = 0.0, .z = 0.0};
+	up = (t_float3){.x = 0.0, .y = 1.0, .z = 0.0};
+
+	camera_direction = normalize_float3(subtract_b_to_a_float3(camera_pos, camera_target));
+	camera_right = normalize_float3(cross_product_float3(up, camera_direction));
+	camera_up = cross_product_float3(camera_direction, camera_right);
+
+	f = normalize_float3(subtract_b_to_a_float3(camera_target, camera_pos));
+	s = normalize_float3(cross_product_float3(f, normalize_float3(up)));
+	u = cross_product_float3(s, f);
+
+
+	mt4_result = create_mat4();
+
+
+	mt4_result[0] = s.x;
+	mt4_result[1] = u.x;
+	mt4_result[2] = f.x;
+	// mt4_result[3] = 
+
+	mt4_result[4] = s.y;
+	mt4_result[5] = u.y;
+	mt4_result[6] = f.y;
+	// mt4_result[7] = 
+
+	mt4_result[8] = s.z;
+	mt4_result[9] = u.z;
+	mt4_result[10] = f.z;
+	// mt4_result[11] = 
+
+	mt4_result[12] = -dot_float3(s, camera_pos);
+	mt4_result[13] = -dot_float3(u, camera_pos);
+	mt4_result[14] = dot_float3(f, camera_pos);
+	// mt4_result[15] = 
+
+	return (mt4_result);
+}
 
 
 float	*set_projection_matrix(float *mt4, float fov)

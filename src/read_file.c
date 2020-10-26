@@ -53,6 +53,7 @@ char *read_file(char *shader_path, int *size)
 		shader = str_add(shader, buffer,  total_index, index);
 		total_index = index + total_index;
 	}
+	close(fd);
 	shader[total_index] = '\0';
 	if (size != NULL)
 	{
