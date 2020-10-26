@@ -198,7 +198,7 @@ void	feed_uint32_array_with_current_line(uint32_t *float_array, int *current_flo
 }
 
 
-void	obj_parser(char *input, float *vertex_positions, uint32_t *frags)
+void	obj_parser(char *input, float *vertex_positions, int *vertex_positions_count, uint32_t *frags, int *frags_count)
 {
 	//ft_putstr(input);
 	// float		*vertex_positions;
@@ -217,24 +217,24 @@ void	obj_parser(char *input, float *vertex_positions, uint32_t *frags)
 	x = 0;
 	i = 0;
 
-	int		vertex_positions_count;
+	// int		vertex_positions_count;
 	int		vertex_positions_current_index;
 
-	int		frags_count;
+	// int		frags_count;
 	int		frags_current_index;
 
 	frags_current_index = 0;
 	vertex_positions_current_index = 0;
 
-	vertex_positions_count = count_vertex_and_frags(input, V_OBJ_SYMBOL);
+	*vertex_positions_count = count_vertex_and_frags(input, V_OBJ_SYMBOL);
 	printf("vertex numbers : %d\n", count_vertex_and_frags(input, V_OBJ_SYMBOL));
 
-	frags_count = count_vertex_and_frags(input, F_OBJ_SYMBOL);
+	*frags_count = count_vertex_and_frags(input, F_OBJ_SYMBOL);
 	printf("frags numbers : %d\n", count_vertex_and_frags(input, F_OBJ_SYMBOL));
 
 
-	vertex_positions = (float*)malloc(sizeof(float) * (vertex_positions_count ));
-	frags = (uint32_t*)malloc(sizeof(uint32_t) * (frags_count));
+	vertex_positions = (float*)malloc(sizeof(float) * (*vertex_positions_count ));
+	frags = (uint32_t*)malloc(sizeof(uint32_t) * (*frags_count));
 
 
 	while (input[i] != '\0')
@@ -262,9 +262,22 @@ void	obj_parser(char *input, float *vertex_positions, uint32_t *frags)
 					frags[frags_current_index-1] = frags[frags_current_index-4];
 					frags[frags_current_index] = frags[frags_current_index-2];
 					frags_current_index+=2;
-					printf("current index f: %d\n", frags_current_index);
 
+					frags[frags_current_index-4] -= 1;
+					frags[frags_current_index-3] -= 1;
+					frags[frags_current_index-2] -= 1;
+					frags[frags_current_index-1] -= 1;
+					frags[frags_current_index] -= 1;
+					frags[frags_current_index+1] -= 1;
+					printf("current index f: %d\n", frags_current_index);
 				}
+				else
+				{
+					frags[frags_current_index-3] -= 1;
+					frags[frags_current_index-2] -= 1;
+					frags[frags_current_index-1] -= 1;
+				}
+				
 
 			}
 			else if (begin_with(&input[i], "v")) // Vertex position

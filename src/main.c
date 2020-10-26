@@ -72,10 +72,12 @@ int main()
 	fragmentShaderSource = read_file("shaders/basic/fragment.glsl", 0);
 	vertexShaderSource = read_file("shaders/basic/vertex.glsl", 0);
 
-	float *vertices1;
-	uint32_t *indices;
+	// float *vertices;
+	// int svertices;
+	// uint32_t *indices;
+	// int sindices;
 
-	obj_parser(read_file("resources/42.obj", 0),vertices1, indices);
+	// obj_parser(read_file("resources/42.obj", 0),vertices, &svertices, indices, &sindices);
 
 	// glfw: initialize and configure
 	// ------------------------------
@@ -149,8 +151,7 @@ int main()
     //     -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
     //     -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
     // };
-
-    float vertices[] = {
+   float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -193,7 +194,41 @@ int main()
         -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
+// float vertices[] = {
+// -1.0, -1.0, 1.0,
+// 1.0, -1.0, 1.0,
+// 1.0, 1.0, 1.0,
+// 1.0, 1.0, 1.0,
+// -1.0, 1.0, -1.0,
+// 1.0, 1.0, -1.0,
+// -1.0, -1.0 -1.0,
+// 1.0, -1.0, -1.0
+// };
 
+// int indices[] = {
+// 1-1, 2-1, 3-1,
+// 3-1, 2-1, 4-1,
+// 3-1, 4-1, 5-1,
+// 5-1, 4-1, 6-1,
+// 5-1, 6-1, 7-1,
+// 7-1, 6-1, 8-1,
+// 7-1, 8-1, 1-1,
+// 1-1, 8-1, 2-1,
+// 2-1, 8-1, 4-1,
+// 4-1, 8-1, 6-1,
+// 7-1, 1-1, 5-1,
+// 5-1, 1-1, 3-1,
+// };
+    // float vertices[] = {
+    //      0.5f,  0.5f, 0.0f,  // top right
+    //      0.5f, -0.5f, 0.0f,  // bottom right
+    //     -0.5f, -0.5f, 0.0f,  // bottom left
+    //     -0.5f,  0.5f, 0.0f   // top left 
+    // };
+    unsigned int indices[] = {  // note that we start from 0!
+        0, 1, 3,  // first Triangle
+        1, 2, 3   // second Triangle
+    };
 
 
 
@@ -201,15 +236,15 @@ int main()
 	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
+	// glGenBuffers(1, &EBO);
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -369,8 +404,11 @@ int main()
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		// glClear(GL_COLOR_BUFFER_BIT);
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		
+		
 		//glUseProgram(shaderProgram);
 
 	 	// glBindTexture(GL_TEXTURE_2D, texture);
@@ -420,7 +458,11 @@ int main()
 		glBindVertexArray(VAO);
         
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
+		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+
+
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// // render the triangle
