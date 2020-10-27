@@ -261,7 +261,6 @@ void	obj_parser(char *input, float *vertex_positions, int *vertex_positions_coun
 					frags[frags_current_index+1] = frags[frags_current_index-1];
 					frags[frags_current_index-1] = frags[frags_current_index-4];
 					frags[frags_current_index] = frags[frags_current_index-2];
-					frags_current_index+=2;
 
 					frags[frags_current_index-4] -= 1;
 					frags[frags_current_index-3] -= 1;
@@ -269,6 +268,7 @@ void	obj_parser(char *input, float *vertex_positions, int *vertex_positions_coun
 					frags[frags_current_index-1] -= 1;
 					frags[frags_current_index] -= 1;
 					frags[frags_current_index+1] -= 1;
+					frags_current_index+=2;
 					printf("current index f: %d\n", frags_current_index);
 				}
 				else

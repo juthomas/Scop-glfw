@@ -140,5 +140,8 @@ float			*set_projection_matrix(float *mt4, float fov);
 
 char			*read_file(char *shader_path, int *size);
 
-void				obj_parser(char *input, float *vertex_positions, int *vertex_positions_count, uint32_t *frags, int *frags_count);
+void			obj_parser(char *input, float *vertex_positions, int *vertex_positions_count, uint32_t *frags, int *frags_count);
+
+void			load_texture(unsigned int *texture, char *path_to_texture);
+
 #endif

@@ -11,7 +11,7 @@ INC_PATH = ./include/ $(LIB_PATH)libft/includes/ $(LIB_PATH)glfw/include/ \
 GCC_FLGS = -g #-Werror -Wextra -Wall
 GCC_LIBS = -lglfw3 -framework AppKit -framework OpenGL -framework IOKit -framework CoreVideo 
 
-SRC_NAME = main.c read_file.c matrix.c obj_parser.c
+SRC_NAME = main.c read_file.c matrix.c obj_parser.c load_texture.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = libft glfw/src
@@ -36,7 +36,7 @@ $(NAME): $(OBJ)
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir -p $(OBJ_PATH)
 	@$(CC) $(GCC_FLGS) $(INC) -o $@ -c $<
-	@echo "$(COLOR)Compiled :\033[100D\033[40C\0033[1;32m$(@:$(OBJ_PATH)/%=%)\0033[1;37m"
+	@echo "$(COLOR)$(@:$(OBJ_PATH)/%=%) \033[100D\033[40C\0033[1;32m[Compiled]]\0033[1;37m"
 	
 
 clean:

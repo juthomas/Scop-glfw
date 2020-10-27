@@ -10,35 +10,6 @@
 
 
 
-// Parse Bmp Header
-// Infos at:
-// http://www.apprendre-en-ligne.net/info/images/formatbmp.pdf
-t_bmp_header serialize_bmp_header(void *addr)
-{
-	t_bmp_header header;
-
-	//File header
-	header.ftype          = *((uint16_t*)(addr + 0x00));
-	header.fsize          = *((uint32_t*)(addr + 0x02));
-	header.freserve1      = *((uint16_t*)(addr + 0x06));
-	header.freserve2      = *((uint16_t*)(addr + 0x08));
-	header.foffbits       = *((uint32_t*)(addr + 0x0A));
-
-	//Bitmap header
-	header.bsize          = *((uint32_t*)(addr + 0x0E));
-	header.bwidth         = *((uint32_t*)(addr + 0x12));
-	header.bheight        = *((uint32_t*)(addr + 0x16));
-	header.bplanes        = *((uint16_t*)(addr + 0x1A));
-	header.bbitcount      = *((uint16_t*)(addr + 0x1C));
-	header.bcompression   = *((uint32_t*)(addr + 0x1E));
-	header.bsizeimage     = *((uint32_t*)(addr + 0x22));
-	header.bxpelspermeter = *((uint32_t*)(addr + 0x26));
-	header.bypelspermeter = *((uint32_t*)(addr + 0x2A));
-	header.bclrused       = *((uint32_t*)(addr + 0x2E));
-	header.bclrimportant  = *((uint32_t*)(addr + 0x32));
-
-	return (header);
-}
 
 
 
@@ -46,6 +17,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window, float *mix_level, t_float3 *rotation, t_float3 *translation, t_float3 *size);
 
 // settings
+
 
 
 
@@ -70,6 +42,7 @@ int main()
 	const char *vertexShaderSource;
 
 	fragmentShaderSource = read_file("shaders/basic/fragment.glsl", 0);
+	printf("Shader: %s\n", fragmentShaderSource);
 	vertexShaderSource = read_file("shaders/basic/vertex.glsl", 0);
 
 	// float *vertices;
@@ -260,102 +233,9 @@ int main()
     // load and create a texture 
     // -------------------------
     unsigned int texture1, texture2;
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-
-	// printf("Hello\n");
-	 // char *data_bmp = (char*)open_shader("textures/wall.bmp");
-	//  char *data_bmp = (char*)open_shader("textures/container.bmp");
-	 char *data_bmp = (char*)read_file("textures/awesomeface.bmp", 0);
-
-	t_bmp_header bmpheader;
-	bmpheader = serialize_bmp_header(data_bmp);
-
-	// printf("bmp header :Width = %ud, Height = %ud\n", bmpheader.bwidth, bmpheader.bheight);
-		printf("bmp header :Width = %ud, Height = %ud, Bit per px %x\n", bmpheader.bwidth, bmpheader.bheight, bmpheader.bbitcount);
-
-
-	printf("Memory :\n");
-
-	ft_print_memory(data_bmp, 42);
-
-	// // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	// // glBindVertexArray(0);
-
-	// if (data)
-	// {
-	// 	//printf("data:%s\n", data);
-	// 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_INT_8_8_8_8, data + 0x000A);
-    // 	glGenerateMipmap(GL_TEXTURE_2D);
-	// }
-
-
- 
-    // load image, create texture and generate mipmaps
-    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    if (data_bmp)
-    {
-        //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        if (bmpheader.bbitcount == 0x20)
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bmpheader.bwidth, bmpheader.bheight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, data_bmp+bmpheader.foffbits);
-		}
-		else if (bmpheader.bbitcount == 0x18)
-		{
-        	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bmpheader.bwidth, bmpheader.bheight, 0, GL_BGR, GL_UNSIGNED_BYTE, data_bmp+bmpheader.foffbits);
-		}
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        ft_putstr_fd("Failed to load texture1",2);
-    }
-	free(data_bmp);
-
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	// data_bmp = (char*)open_shader("textures/awesomeface.bmp");
-	data_bmp = (char*)read_file("textures/container.bmp", 0);
-	bmpheader = serialize_bmp_header(data_bmp);
-		printf("bmp header :Width = %ud, Height = %ud, bit per px %x\n", bmpheader.bwidth, bmpheader.bheight, bmpheader.bbitcount);
-
-
-	printf("Memory :\n");
-
-	ft_print_memory(data_bmp, 42);
-
-    if (data_bmp)
-    {
-        //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        if (bmpheader.bbitcount == 0x20)
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bmpheader.bwidth, bmpheader.bheight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, data_bmp+bmpheader.foffbits);
-		}
-		else if (bmpheader.bbitcount == 0x18)
-		{
-        	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bmpheader.bwidth, bmpheader.bheight, 0, GL_BGR, GL_UNSIGNED_BYTE, data_bmp+bmpheader.foffbits);
-		}
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        ft_putstr_fd("Failed to load texture2",2);
-    }
+	load_texture(&texture1, "textures/awesomeface.bmp");
+	load_texture(&texture2, "textures/container.bmp");
 
 	float mix_level = 0.5;
 	// float rotation = 0;
@@ -375,19 +255,19 @@ int main()
 
 	// as we only have a single shader, we could also just activate our shader once beforehand if we want to 
 
-		float *mt4;
+	float *mt4;
 
-		mt4 = create_mat4();
+	mt4 = create_mat4();
 
 
-		float *view;
+	float *view;
 
-		view = create_mat4();
-		view = translate_mat4(view, (t_float3){.x = 0, .y = 0, .z = 0.0});
+	view = create_mat4();
+	view = translate_mat4(view, (t_float3){.x = 0, .y = 0, .z = 0.0});
 
-		float *projection;
-		projection = create_mat4();
-		projection = set_projection_matrix(projection, 90.);
+	float *projection;
+	projection = create_mat4();
+	projection = set_projection_matrix(projection, 90.);
 
 
 
